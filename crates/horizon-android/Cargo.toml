@@ -1,0 +1,22 @@
+[package]
+name = "horizon-android"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version = "1.90"
+description = "The game as an Android native library, loaded by the app in android/"
+
+[lib]
+name = "horizon_android"
+crate-type = ["cdylib"]
+
+# Everything is Android-only; on other targets this crate is an empty library, so
+# `cargo build --workspace` keeps working.
+[target.'cfg(target_os = "android")'.dependencies]
+# No audio and no controllers in this first Android build (a Bluetooth keyboard and mouse only).
+horizon-client = { path = "../horizon-client", default-features = false }
+horizon-threads = { path = "../horizon-threads" }
+winit = { version = "0.30.13", features = ["android-native-activity"] }
+
+[lints]
+workspace = true

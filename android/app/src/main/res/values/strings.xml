@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Horizon</string>
+    <string name="subtitle">محرك ماين كرافت 26.3 على الجوال (تجريبي)</string>
+    <string name="play">تشغيل</string>
+    <string name="guard_switch">حماية الجهاز</string>
+    <string name="guard_hint">توقف اللعبة قبل ما يثقل الجهاز أو يسخن</string>
+    <string name="status_ok">الجهاز جاهز</string>
+    <string name="blocked_title">ما أكدر أشغل اللعبة:</string>
+    <string name="warn_title">تنبيهات:</string>
+    <string name="mem_line">الرام: %1$s متاح من %2$s</string>
+
+    <string name="block_abi">الجهاز لازم يكون arm64 (64 بت)</string>
+    <string name="block_vulkan">الجهاز ما يدعم Vulkan 1.1</string>
+    <string name="block_ram_total">الرام الكلي قليل (أقل من 2.5 جيجا)</string>
+    <string name="block_ram_free">الرام المتاح قليل: أغلق التطبيقات الثانية وجرب</string>
+    <string name="block_low_memory">النظام يعاني من ضغط على الذاكرة حالياً</string>
+    <string name="block_thermal">الجهاز سخن مرة: انتظر يبرد</string>
+    <string name="block_battery_temp">حرارة البطارية عالية: انتظر تبرد</string>
+    <string name="block_battery_level">البطارية قليلة جداً: وصّل الشاحن</string>
+    <string name="warn_ram_free">الرام المتاح محدود، ممكن تتقطع اللعبة</string>
+    <string name="warn_thermal">الجهاز بدأ يسخن</string>
+    <string name="warn_battery_temp">حرارة البطارية مرتفعة شوي</string>
+    <string name="warn_battery_level">البطارية أقل من 20%</string>
+    <string name="warn_power_save">وضع توفير الطاقة شغال وراح يبطئ اللعبة</string>
+
+    <string name="stop_thermal">أوقفت اللعبة لأن الجهاز سخن</string>
+    <string name="stop_battery_temp">أوقفت اللعبة لأن حرارة البطارية عالية</string>
+    <string name="stop_memory">أوقفت اللعبة لأن الذاكرة قاربت تخلص</string>
+    <string name="stop_battery_level">أوقفت اللعبة لأن البطارية شارفت تخلص</string>
+</resources>

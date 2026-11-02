@@ -123,6 +123,7 @@ pub trait Clipboard {
 /// data-control protocol and falls back to X11 (XWayland) on compositors
 /// without it. When no system clipboard can be reached, text copied in the
 /// game can still be pasted in the game.
+#[cfg(not(target_os = "android"))]
 #[derive(Default)]
 pub struct SystemClipboard {
     system: Option<arboard::Clipboard>,
@@ -130,6 +131,7 @@ pub struct SystemClipboard {
     copied: Option<String>,
 }
 
+#[cfg(not(target_os = "android"))]
 impl SystemClipboard {
     /// The text last copied by the game.
     pub fn copied(&self) -> Option<&str> {
@@ -143,6 +145,7 @@ impl SystemClipboard {
     }
 }
 
+#[cfg(not(target_os = "android"))]
 impl Clipboard for SystemClipboard {
     fn get(&mut self) -> String {
         let Some(system) = self.system() else {
@@ -167,6 +170,34 @@ impl Clipboard for SystemClipboard {
             && system.set_text(text.to_owned()).is_err()
         {
             self.system = None;
+        }
+    }
+}
+
+/// Android has no clipboard crate here yet: text copied in the game can still be pasted in the game.
+#[cfg(target_os = "android")]
+#[derive(Default)]
+pub struct SystemClipboard {
+    /// The text Horizon last copied (`horizon-ctl status`).
+    copied: Option<String>,
+}
+
+#[cfg(target_os = "android")]
+impl SystemClipboard {
+    /// The text last copied by the game.
+    pub fn copied(&self) -> Option<&str> {
+        self.copied.as_deref()
+    }
+}
+
+#[cfg(target_os = "android")]
+impl Clipboard for SystemClipboard {
+    fn get(&mut self) -> String {
+        self.copied.clone().unwrap_or_default()
+    }
+    fn set(&mut self, text: &str) {
+        if !text.is_empty() {
+            self.copied = Some(text.to_owned());
         }
     }
 }

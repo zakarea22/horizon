@@ -106,6 +106,10 @@ wgpu = { version = "30.0.1", default-features = false, features = ["gles"] }
 # The icon resource in the .exe (build.rs).
 winresource = "0.1"
 
+# Android: the activity glue winit's loop runs on (src/platform.rs); crates/horizon-android is the entry point.
+[target.'cfg(target_os = "android")'.dependencies]
+winit = { version = "0.30.13", features = ["android-native-activity"] }
+
 [features]
 default = ["audio", "controllers"]
 # Sound output. Without it (and `controllers`) the program links neither libasound nor libudev on

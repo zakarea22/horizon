@@ -37,6 +37,8 @@ members = [
     "crates/horizon-optifine",
     "crates/horizon-shader-api",
     "crates/horizon-release-sign",
+    # The game as an Android native library (cdylib), loaded by the app in android/.
+    "crates/horizon-android",
     "xtask",
 ]
 resolver = "2"
