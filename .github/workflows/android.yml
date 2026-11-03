@@ -34,10 +34,11 @@ jobs:
         run: cargo install cargo-ndk --locked
 
       - name: Build the native library
-        env:
-          # The runner image ships the Android NDK.
-          ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_LATEST_HOME }}
         run: |
+          # The runner image ships the Android NDK at ANDROID_NDK_ROOT; cargo-ndk reads ANDROID_NDK_HOME first.
+          export ANDROID_NDK_HOME="${ANDROID_NDK_ROOT:-${ANDROID_NDK_LATEST_HOME:-}}"
+          echo "NDK: $ANDROID_NDK_HOME"
+          test -d "$ANDROID_NDK_HOME"
           cargo ndk -t arm64-v8a -o android/app/src/main/jniLibs \
             build --profile fast -p horizon-android
           ls -la android/app/src/main/jniLibs/arm64-v8a
