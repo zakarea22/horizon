@@ -11,7 +11,7 @@ use winit::platform::android::activity::AndroidApp;
 
 /// The same allocator as the desktop executable (`crates/horizon-client/src/main.rs`).
 #[global_allocator]
-static ALLOCATOR: horizon_threads::Allocator = horizon_threads::Allocator;
+static ALLOCATOR: horizon_threads::Allocator = horizon_threads::ALLOCATOR;
 
 #[link(name = "log")]
 unsafe extern "C" {
