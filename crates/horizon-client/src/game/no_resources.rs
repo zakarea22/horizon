@@ -126,6 +126,26 @@ impl ApplicationHandler for Missing {
     }
 
     fn window_event(&mut self, event_loop: &ActiveEventLoop, id: WindowId, event: WindowEvent) {
+        crate::platform::trace_window_event(&event);
+        for event in crate::platform::pointer_events(event).into_iter().flatten() {
+            self.on_window_event(event_loop, id, event);
+        }
+    }
+
+    fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
+        if horizon_threads::stop_requests() > 0 {
+            event_loop.exit();
+            return;
+        }
+        // Wake now and then for Ctrl+C in the console; redraws come with events.
+        event_loop.set_control_flow(ControlFlow::WaitUntil(
+            Instant::now() + Duration::from_millis(250),
+        ));
+    }
+}
+
+impl Missing {
+    fn on_window_event(&mut self, event_loop: &ActiveEventLoop, id: WindowId, event: WindowEvent) {
         let Some(window) = self.window.clone().filter(|w| w.id() == id) else {
             return;
         };
@@ -155,16 +175,5 @@ impl ApplicationHandler for Missing {
             }
             _ => {}
         }
-    }
-
-    fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
-        if horizon_threads::stop_requests() > 0 {
-            event_loop.exit();
-            return;
-        }
-        // Wake now and then for Ctrl+C in the console; redraws come with events.
-        event_loop.set_control_flow(ControlFlow::WaitUntil(
-            Instant::now() + Duration::from_millis(250),
-        ));
     }
 }

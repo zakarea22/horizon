@@ -35,9 +35,13 @@ fn android_main(app: AndroidApp) {
     std::panic::set_hook(Box::new(|info| {
         logcat(LOG_ERROR, &format!("panic: {info}"))
     }));
-    // The game keeps its folder in HOME and the working directory; the app's private folder is
-    // the one place it can always write.
-    if let Some(dir) = app.internal_data_path() {
+    // The game keeps its folder in HOME and the working directory. The app's folder on shared storage
+    // (Android/data/<package>/files) needs no permission and a file manager can put the prepared game
+    // files into it; the private folder is the fallback.
+    if let Some(dir) = app
+        .external_data_path()
+        .or_else(|| app.internal_data_path())
+    {
         let _ = std::fs::create_dir_all(&dir);
         let _ = std::env::set_current_dir(&dir);
         // SAFETY: nothing else runs yet that reads the environment.

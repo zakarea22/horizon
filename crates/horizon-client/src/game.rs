@@ -21061,12 +21061,16 @@ impl ApplicationHandler for App {
         }
     }
     fn window_event(&mut self, event_loop: &ActiveEventLoop, id: WindowId, event: WindowEvent) {
-        match self {
-            App::Loading(loading) => loading.window_event(event_loop, id, event),
-            App::Ready(game) => game.window_event(event_loop, id, event),
+        crate::platform::trace_window_event(&event);
+        for event in crate::platform::pointer_events(event).into_iter().flatten() {
+            match self {
+                App::Loading(loading) => loading.window_event(event_loop, id, event),
+                App::Ready(game) => game.window_event(event_loop, id, event),
+            }
         }
     }
     fn device_event(&mut self, event_loop: &ActiveEventLoop, id: DeviceId, event: DeviceEvent) {
+        crate::platform::trace_device_event(&event);
         if let App::Ready(game) = self {
             game.device_event(event_loop, id, event);
         }
